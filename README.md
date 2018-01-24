@@ -93,7 +93,7 @@ export default Ember.Route.extend({
       filename: get(file, 'name'),
       filesize: get(file, 'size')
     });
-    
+
     try {
       file.readAsDataURL().then(function (url) {
         if (get(photo, 'url') == null) {
@@ -152,7 +152,7 @@ moduleForAcceptance('/photos');
 test('uploading an image', async function (assert) {
   let file = File.fromDataURL('data:image/gif;base64,R0lGODdhCgAKAIAAAAEBAf///ywAAAAACgAKAAACEoyPBhp7vlySqVVFL8oWg89VBQA7');
 
-  await upload('#upload-photo', file, 'smile.gif');
+  await upload('#upload-photo input[type="file"]', file, 'smile.gif');
 
   let photo = server.db.photos[0];
   assert.equal(photo.filename, 'smile.gif');
@@ -162,14 +162,14 @@ test('uploading an image', async function (assert) {
 If the file isn't uploaded to the server, you don't need to use the mirage helper. The same approach applies to all types of files; encode them as a Base64 data url or read them from a file as a blob.
 
 ```javascript
-import upload from '../helpers/upload';
+import { upload } from '../../helpers/upload';
 
 moduleForAcceptance('/notes');
 
 test('showing a note', async function (assert) {
   let file = File.fromDataUrl('data:text/plain;base64,SSBjYW4gZmVlbCB0aGUgbW9uZXkgbGVhdmluZyBteSBib2R5');
 
-  await upload('#upload-note', file, 'douglas_coupland.txt');
+  await upload('#upload-note input[type="file"]', file, 'douglas_coupland.txt');
 
   assert.equal(find('.note').text(), 'I can feel the money leaving my body');
 });
